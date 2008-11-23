@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>Test primacy</title>
+		<meta http-equiv="keywords" content="">
+		<meta http-equiv="description" content="">
+		<style type="text/css" media="screen">
+			body {
+				padding: 20px;
+				font-family: georgia, times, sans-serif;
+				letter-spacing: -0.01em;
+				line-height: 1.4;
+			}
+
+			h1,
+			h2,
+			p {
+				font-weight: normal;
+				margin: 0px 0px 4px 0px;
+			}
+
+			h1 {
+				display: inline;
+				border-bottom: 1px solid #cee;
+				margin: 0px 0px 8px 0px;
+			}
+
+			div.machine-tags {
+				width: 200px;
+				padding: 10px;
+				float: left;
+				margin: 20px 60px 0px 0px;
+			}
+		</style>
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			
+			calculatePrimary = function(tags) {
+				var uniqueTags = new Array();
+				var tagsAsText = new Array();
+				// extract text from jquery objects
+				tags.each(function(i) {
+					tagsAsText.push($(tags[i]).text());
+				});
+				
+				//tagsAsText = tags.map(function(tag) { $(tags[tag]).text(); });
+				
+				// switch keys/values to create a faked unique array
+				for (tag in tagsAsText) uniqueTags[tagsAsText[tag]] = tag;
+				//
+				var primary = { tag: null, count: 0 }
+				// store 
+				var lastCount = 0;
+				// use gaps in array to calculate tag with the highest primacy
+				for (tag in uniqueTags) {
+					// gap equals current index minus last index
+					var arrCountGap = uniqueTags[tag] - lastCount;
+					// if gap is higher than or equal to the last, overwrite primary storage
+					if(arrCountGap >= primary.count) {
+						primary.count = arrCountGap;
+						primary.tag = tag;
+					}
+					var lastCount = uniqueTags[tag];
+				}
+				
+				// return tag with the highest primacy
+				return primary.tag;
+			}
+			
+			//
+			google.load("jquery", "1.2.6");
+			google.setOnLoadCallback(function(){
+				$("div.machine-tags").each(function(i) {
+					$("h1", this).text("Primary: " + calculatePrimary($("p", this)));
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="machine-tags">
+			<h1>Primary:</h1>
+			<p>Jan/05</p>
+			<p>Feb/06</p>
+			<p>Feb/06</p>
+			<p>Mar/08</p>
+		</div>
+		<div class="machine-tags">
+			<h1>Primary:</h1>
+			<p>Jan/06</p>
+			<p>Feb/07</p>
+			<p>Mar/08</p>
+		</div>
+		<div class="machine-tags">
+			<h1>Primary:</h1>
+			<p>Jan/05</p>
+			<p>Feb/06</p>
+			<p>Feb/06</p>
+			<p>Mar/08</p>
+			<p>Mar/08</p>
+		</div>
+	</body>
+</html>
