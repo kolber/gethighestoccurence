@@ -48,7 +48,9 @@
 				
 				// switch keys/values to create a faked unique array
 				for (tag in tagsAsText) uniqueTags[tagsAsText[tag]] = tag;
-				//
+				// you need to sort the array to ensure all common occurences appear next to each other
+				uniqueTags.sort();
+				// create storage variable
 				var primary = { tag: null, count: 0 }
 				// store 
 				var lastCount = 0;
@@ -84,6 +86,8 @@
 			<p>Feb/06</p>
 			<p>Feb/06</p>
 			<p>Mar/08</p>
+			<p>Mar/08</p>
+			<p>Feb/06</p>
 		</div>
 		<div class="machine-tags">
 			<h1>Primary:</h1>
